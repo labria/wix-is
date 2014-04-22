@@ -15,26 +15,26 @@
   (testing "simple check"
     (is (= (simple-check) "UP"))))
 
-(deftest test-checks
+(deftest request-checks
   (with-fake-routes {
     "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
     }
-    (testing "real check positive"
+    (testing "positive check"
       (is (= (check) true))))
   (with-fake-routes {
     "http://www.wix.com/" (fn [request] {:status 404 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
     }
-    (testing "real check 404 from public"
+    (testing "404 from public"
       (is (= (check) false))))
 
   (with-fake-routes {
     "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "not us"} :body "Hey, do I look like wix.com?"})
     }
-    (testing "real check 200 not from public"
+    (testing "200 not from public"
       (is (= (check) false))))
 
   (with-fake-routes {
     "http://www.wix.com/" (fn [request] {:status 200 :headers {} :body "Hey, do I look like wix.com?"})
     }
-    (testing "real check 200 not from public without x-seen-by"
+    (testing "200 not from public, without x-seen-by"
       (is (= (check) false)))))
