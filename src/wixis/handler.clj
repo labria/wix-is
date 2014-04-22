@@ -1,15 +1,24 @@
 (ns wixis.handler
   (:use compojure.core)
+  (:use [slingshot.slingshot :only [throw+ try+]])
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
             [compojure.core :refer [defroutes GET]]
             [ring.adapter.jetty :as ring]
-            [hiccup.page :as h])
+            [hiccup.page :as h]
+            [clj-http.client :as client])
   (:gen-class))
 
 (defn simple-check []
   "UP"
 )
+
+(defn check []
+  (try+
+    (let [resp (client/get "http://www.wix.com/" {:socket-timeout 1000 :conn-timeout 1000})]
+    (not (nil? (re-matches #".*public.*" (get (:headers resp) "x-seen-by")))))
+    (catch Object _
+      false)))
 
 (defn index []
   (h/html5
@@ -18,7 +27,7 @@
      (h/include-css "/main.css")
     ]
     [:body
-      [:h1 (simple-check)]]))
+      [:h1 (if (check) "UP" "DOWN")]]))
 
 (defroutes app-routes
   (GET "/" [] (index))
