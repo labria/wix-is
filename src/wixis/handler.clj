@@ -4,6 +4,10 @@
             [compojure.route :as route]
             [hiccup.page :as h]))
 
+(defn simple-check []
+  "UP"
+)
+
 (defn index []
   (h/html5
     [:head
@@ -11,7 +15,7 @@
      (h/include-css "/main.css")
     ]
     [:body
-      [:h1 "up"]]))
+      [:h1 (simple-check)]]))
 
 (defroutes app-routes
   (GET "/" [] (index))
