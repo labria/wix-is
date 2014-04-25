@@ -23,8 +23,10 @@
 (defn index []
   (h/html5
     [:head
+     [:meta {:charset "utf-8"}]
      [:title "wix.is"]
-     (h/include-css "/main.css")
+     [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
+     [:style "h1{left:0;line-height:200px;margin-top:-100px;position:absolute;text-align:center;top:50%;width:100%;font-size:10em;font-family:arial,sans-serif}"]
     ]
     [:body
       [:h1 (if (check) "UP" "DOWN")]]))
