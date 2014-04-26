@@ -6,7 +6,7 @@
                  [compojure "1.1.6"]
                  [ring/ring-jetty-adapter "1.2.2"]
                  [hiccup "1.0.5"]
-                 [clj-http "0.1.3"]
+                 [clj-http "0.9.1"]
                  [slingshot "0.10.3"]]
   :plugins [[lein-ring "0.8.10"]
             [lein-ancient "0.5.5"]]
