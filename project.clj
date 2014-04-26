@@ -13,6 +13,6 @@
   :ring {:handler wixis.handler/app}
   :uberjar-name "wixis-standalone.jar"
   :profiles {:uberjar {:main wixis.handler, :aot :all}
-  :dev {:dependencies [[javax.servlet/servlet-api "2.5"]
-                       [ring-mock "0.1.5"]
-                       [clj-http-fake "0.7.8"]]}})
+             :dev     {:dependencies [[javax.servlet/servlet-api "2.5"]
+                                      [ring-mock "0.1.5"]
+                                      [clj-http-fake "0.7.8"]]}})

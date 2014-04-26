@@ -1,6 +1,6 @@
 (ns wixis.test.handler
   (:use clojure.test
-        ring.mock.request  
+        ring.mock.request
         wixis.handler
         clj-http.fake))
 
@@ -8,7 +8,7 @@
   (testing "main route"
     (let [response (app (request :get "/"))]
       (is (= (:status response) 200))))
-  
+
   (testing "not-found route"
     (let [response (app (request :get "/invalid"))]
       (is (= (:status response) 404))))
@@ -17,24 +17,24 @@
 
 (deftest request-checks
   (with-fake-routes {
-    "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
-    }
-    (testing "positive check"
-      (is (= (check) true))))
+                      "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
+                      }
+                    (testing "positive check"
+                      (is (= (check) true))))
   (with-fake-routes {
-    "http://www.wix.com/" (fn [request] {:status 404 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
-    }
-    (testing "404 from public"
-      (is (= (check) false))))
+                      "http://www.wix.com/" (fn [request] {:status 404 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
+                      }
+                    (testing "404 from public"
+                      (is (= (check) false))))
 
   (with-fake-routes {
-    "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "not us"} :body "Hey, do I look like wix.com?"})
-    }
-    (testing "200 not from public"
-      (is (= (check) false))))
+                      "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "not us"} :body "Hey, do I look like wix.com?"})
+                      }
+                    (testing "200 not from public"
+                      (is (= (check) false))))
 
   (with-fake-routes {
-    "http://www.wix.com/" (fn [request] {:status 200 :headers {} :body "Hey, do I look like wix.com?"})
-    }
-    (testing "200 not from public, without x-seen-by"
-      (is (= (check) false)))))
+                      "http://www.wix.com/" (fn [request] {:status 200 :headers {} :body "Hey, do I look like wix.com?"})
+                      }
+                    (testing "200 not from public, without x-seen-by"
+                      (is (= (check) false)))))

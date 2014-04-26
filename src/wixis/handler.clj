@@ -11,12 +11,12 @@
 
 (defn simple-check []
   "UP"
-)
+  )
 
 (defn check []
   (try+
     (let [resp (client/get "http://www.wix.com/" {:socket-timeout 1000 :conn-timeout 1000})]
-    (not (nil? (re-matches #".*public.*" (get (:headers resp) "x-seen-by")))))
+      (not (nil? (re-matches #".*public.*" (get (:headers resp) "x-seen-by")))))
     (catch Object _
       false)))
 
@@ -27,14 +27,14 @@
      [:title "wix.is"]
      [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
      [:style "h1{left:0;line-height:200px;margin-top:-100px;position:absolute;text-align:center;top:50%;width:100%;font-size:10em;font-family:arial,sans-serif}"]
-    ]
+     ]
     [:body
-      [:h1 (if (check) "UP" "DOWN")]]))
+     [:h1 (if (check) "UP" "DOWN")]]))
 
 (defroutes app-routes
-  (GET "/" [] (index))
-  (route/resources "/")
-  (route/not-found "Not Found"))
+           (GET "/" [] (index))
+           (route/resources "/")
+           (route/not-found "Not Found"))
 
 (def app
   (handler/site app-routes))
@@ -42,7 +42,7 @@
 
 
 (defn start [port]
-  (ring/run-jetty app {:port port
+  (ring/run-jetty app {:port  port
                        :join? false}))
 
 (defn -main []
