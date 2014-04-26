@@ -15,8 +15,9 @@
 
 (defn check []
   (try+
-    (let [resp (client/get "http://www.wix.com/" {:socket-timeout 1000 :conn-timeout 1000})]
-      (not (nil? (re-matches #".*public.*" (get (:headers resp) "x-seen-by")))))
+    (let [resp (client/get "http://www.wix.com/" {:socket-timeout 1000 :conn-timeout 1000})
+          seen-by (get (:headers resp) "x-seen-by")]
+      (not (nil? (re-matches #".*public.*" seen-by))))
     (catch Object _
       false)))
 

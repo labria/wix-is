@@ -19,7 +19,12 @@
   (with-fake-routes {
                       "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
                       }
-                    (testing "positive check"
+                    (testing "positive check with one x-seen-by"
+                      (is (= (check) true))))
+  (with-fake-routes {
+                      "http://www.wix.com/" (fn [request] {:status 200 :headers {"x-seen-by" ["sputnik" "some public server"]} :body "Hey, do I look like wix.com?"})
+                      }
+                    (testing "positive check with one x-seen-by"
                       (is (= (check) true))))
   (with-fake-routes {
                       "http://www.wix.com/" (fn [request] {:status 404 :headers {"x-seen-by" "some public server"} :body "Hey, do I look like wix.com?"})
