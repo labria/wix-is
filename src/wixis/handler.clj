@@ -15,11 +15,13 @@
 
 (defn check []
   (try+
-    (let [resp (client/get "http://www.wix.com/" {:socket-timeout 1000 :conn-timeout 1000})
+    (let [resp (client/get "http://www.wix.com/" {:socket-timeout 1000 :conn-timeout 1000, :throw-exceptions true})
           seen-by (get (:headers resp) "x-seen-by")
           last-seen-by (last (flatten [seen-by]))]
-      (not (nil? (re-matches #".*public.*" last-seen-by))))
-    (catch Object _
+      (and
+        (boolean last-seen-by)
+        (not (nil? (re-matches #".*public.*" last-seen-by)))))
+    (catch [:status 404] {:keys [trace-redirects]}
       false)))
 
 (defn index []
